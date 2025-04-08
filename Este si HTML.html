@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos Meraki</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #fff8f2;
+            color: #333;
+            padding: 30px;
+            text-align: center;
+        }
+        header img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #9b4d2a;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: left;
+            max-width: 400px;
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .button {
+            background-color: #e9a14a;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            width: 100%;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #d48f3d;
+        }
+    </style>
+    <script>
+        function enviarPedido() {
+            const nombre = document.getElementById("nombre").value;
+            const numero = document.getElementById("numero").value.trim();
+            const producto = document.getElementById("producto").value;
+            const otro = document.getElementById("otro").value;
+            const cantidad = document.getElementById("cantidad").value;
+            const fecha = document.getElementById("fecha").value;
+            const hora = document.getElementById("hora").value;
+
+            if (numero.length !== 8 || isNaN(numero)) {
+                alert("Por favor ingresa los 8 dígitos de tu número sin el +569.");
+                return;
+            }
+
+            const productoFinal = producto === "otro" ? otro : producto;
+            const mensaje = `Hola panadería Meraki!%0AMi nombre es: ${nombre}%0AMi número: +569${numero}%0AProducto: ${productoFinal}%0ACantidad: ${cantidad}%0AFecha retiro: ${fecha}%0AHora retiro aprox: ${hora}`;
+
+            const wsp1 = `https://wa.me/56950121924?text=${mensaje}`;
+            const wsp2 = `https://wa.me/56948188002?text=${mensaje}`;
+
+            window.open(wsp1, '_blank');
+            window.open(wsp2, '_blank');
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <img src="logo-meraki.png" alt="Logo Meraki">
+        <h1>Formulario de Pedido</h1>
+    </header>
+
+    <form onsubmit="event.preventDefault(); enviarPedido();">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
+
+        <label for="numero">Número de contacto (sin +569, solo 8 dígitos):</label>
+        <input type="text" id="numero" required maxlength="8" placeholder="Ej: 12345678">
+
+        <label for="producto">Producto:</label>
+        <select id="producto" required>
+            <option value="masa de empanadas">Masa de empanadas</option>
+            <option value="masa de sopaipillas">Masa de sopaipillas</option>
+            <option value="queques">Queques</option>
+            <option value="calzones rotos">Calzones Rotos</option>
+            <option value="pie de limón">Pie de Limón</option>
+            <option value="otro">Otro</option>
+        </select>
+
+        <label for="otro">Especificar si es "Otro":</label>
+        <input type="text" id="otro">
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" required min="1">
+
+        <label for="fecha">Fecha de retiro/entrega:</label>
+        <input type="date" id="fecha" required>
+
+        <label for="hora">Hora de retiro/entrega:</label>
+        <input type="time" id="hora" required>
+
+        <button type="submit" class="button">Enviar Pedido por WhatsApp</button>
+    </form>
+</body>
+</html>
